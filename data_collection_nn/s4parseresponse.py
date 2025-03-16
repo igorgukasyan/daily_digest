@@ -1,6 +1,6 @@
 import json
 import re
-import s2clean
+import data_collection_nn.s2clean as s2clean
 import numpy as np
 with open('batch_67d61003821881908bb423c0d39cd054_output.jsonl', 'r') as f:
     responses = []
