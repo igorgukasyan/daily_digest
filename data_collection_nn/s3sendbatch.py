@@ -1,4 +1,4 @@
-import data_collection_nn.s2clean as s2clean
+import s2clean as s2clean
 import json
 from openai import OpenAI
 import os
@@ -15,7 +15,7 @@ def generate_jsonl(cleaned, num_requests):
                 "method": "POST",
                 "url": "/v1/chat/completions",
                 "body": {
-                    "model": "gpt-4o",
+                    "model": "gpt-4o-mini",
                     "messages": [
                         {"role": "developer", "content": prompt},
                         {"role": "user", "content": cleaned['post'][i-1]}
@@ -26,7 +26,7 @@ def generate_jsonl(cleaned, num_requests):
             json.dump(request_data, file, ensure_ascii=False)
             file.write('\n')
 
-generate_jsonl(cleaned, 200)
+generate_jsonl(cleaned, 10)
 client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
 
 def upload_batch_input_file(file_name):

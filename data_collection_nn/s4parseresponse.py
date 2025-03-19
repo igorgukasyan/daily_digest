@@ -1,8 +1,9 @@
 import json
 import re
-import data_collection_nn.s2clean as s2clean
+import s2clean as s2clean
 import numpy as np
-with open('batch_67d61003821881908bb423c0d39cd054_output.jsonl', 'r') as f:
+import pandas as pd
+with open('../batch_67d61003821881908bb423c0d39cd054_output.jsonl', 'r') as f:
     responses = []
     for line in f: 
         responses.append(json.loads(line))
@@ -29,3 +30,7 @@ def calculate_scores(scores):
     return final_scores
 
 final_scores = calculate_scores(scores)
+cleaned = s2clean.clean()
+cleaned_200 = cleaned.iloc[:200]
+cleaned_200['score']=final_scores
+cleaned_200.to_csv('example200.csv')

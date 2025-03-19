@@ -3,3 +3,4 @@ venv
 *.jsonl
 __pycache__
 *.session
+md/

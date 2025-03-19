@@ -4,7 +4,7 @@ import re
 
 def clean():
     try:
-        with open('post_history.json', 'r') as f: 
+        with open('../post_history.json', 'r') as f: 
             post_history = json.load(f)
             print('JSON loaded')
 
@@ -21,6 +21,7 @@ def clean():
         post_history_long = post_history_long.rename(columns = {'index':'channel'})
         post_history_long = post_history_long.dropna(inplace=False)
         post_history_long = post_history_long.reset_index(drop = True)
+        #post_history_long = post_history_long[~post_history_long['post'].duplicated()]
         print('Cleaned and outputted')
         return post_history_long
     except Exception as e:
