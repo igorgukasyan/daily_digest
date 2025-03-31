@@ -3,4 +3,6 @@ venv
 *.jsonl
 __pycache__
 *.session
-md/
+s6boosting.py
+s6boosting_classifier.py
+xgb_model.pkl
