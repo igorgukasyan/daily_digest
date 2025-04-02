@@ -9,4 +9,5 @@ xgb_model.pkl
 *.pem
 daily_digest.db
 *.json
-*.session
+session_name.session-journal
+session_name.session
