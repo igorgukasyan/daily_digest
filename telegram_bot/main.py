@@ -105,7 +105,9 @@ async def send_newsletters():
     users = get_all_users() 
     for user_id in users:
         ## Generate custom newsletter
-        all_articles = await create_newsletter(user_id) 
+        all_articles = await create_newsletter(user_id)
+        if not all_articles: 
+            await application.bot.send_message(chat_id=user_id, text="No important news!")
         for article in all_articles: 
             try:
                 await application.bot.send_message(chat_id=user_id, text=article)
