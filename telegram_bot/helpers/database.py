@@ -1,6 +1,6 @@
 import sqlite3
 ## Connect to db file
-# connection = sqlite3.connect("daily_digest.db")
+# connection = sqlite3.connect("./telegram_bot/helpers/daily_digest.db")
 # cursor = connection.cursor()
 # ## Create a table
 # cursor.execute("""
