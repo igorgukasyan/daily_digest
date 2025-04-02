@@ -34,4 +34,5 @@ def main(filepath):
     docs = docs.apply(clean_text)
     doc_lengths = doc_length_hist(docs)
     doc_scores = doc_score_hist(data['score'])
+    print(pd.Series(doc_lengths).corr(data['score']))
 

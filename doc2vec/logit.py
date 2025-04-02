@@ -1,6 +1,6 @@
 from sklearn.linear_model import LogisticRegressionCV
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import balanced_accuracy_score, accuracy_score
+from sklearn.metrics import balanced_accuracy_score, accuracy_score, f1_score
 from sklearn.metrics import confusion_matrix
 import pandas as pd
 import gensim
@@ -57,8 +57,8 @@ def evaluate_model(model, X_test, y_test):
     print(f"Confusion Matrix: {conf_matrix}")
 
 def main():
-    data = load_data('../data/data_preprocessed.csv')
-    train_data, test_data = train_test_split(data, test_size=0.2)
+    data = load_data('./data/data_preprocessed.csv')
+    train_data, test_data = train_test_split(data, test_size=0.2, random_state=7)
 
     # Pre-process and tokenize
     train_corpus = list(read_corpus(train_data.iloc[:, 0]))
@@ -85,13 +85,14 @@ def main():
             predictions = logit_model.predict(X_test)
             # Evaluate the model 
             balanced_accuracy = balanced_accuracy_score(y_test, predictions)
-            print(f"Vector size: {vector_size}, Epochs: {epochs}, Balanced Accuracy: {balanced_accuracy}")
+            f1 = f1_score(y_test, predictions)
+            print(f"Vector size: {vector_size}, Epochs: {epochs}, Balanced Accuracy: {balanced_accuracy}, F1_score: {f1}")
             with open('logit_res.json', 'a') as f: 
                     json.dump({"vector_size": vector_size, "epochs": epochs, "balanced_accuracy": balanced_accuracy}, f)
                     f.write('\n')
             # Track best balanced accuracy
-            if balanced_accuracy > best_score: 
-                best_score=balanced_accuracy
+            if f1 > best_score: 
+                best_score=f1
                 best_params = (vector_size, epochs)
 
     print(f"Best model - vector size: {best_params[0]}, Epochs: {best_params[1]}, Balanced Accuracy: {best_score}")

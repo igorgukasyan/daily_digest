@@ -63,5 +63,5 @@ def main(filepath):
     evaluate_model(logit_model, X_test, y_test, X_train, y_train)
 
 if __name__ == '__main__': 
-    main('../bert/embeddings.pickle')
-    main('../bert/embeddings_without_emojis.pickle')
+    main('./bert/embeddings.pickle')
+    main('./bert/embeddings_without_emojis.pickle')
