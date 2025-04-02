@@ -6,3 +6,7 @@ __pycache__
 s6boosting.py
 s6boosting_classifier.py
 xgb_model.pkl
+*.pem
+daily_digest.db
+*.json
+*.session

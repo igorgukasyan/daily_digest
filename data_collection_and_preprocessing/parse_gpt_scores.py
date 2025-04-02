@@ -1,9 +1,9 @@
 import json
 import re
-import data_collection_and_preprocessing.clean_for_chatgpt as clean_for_chatgpt
+from clean_for_chatgpt import clean_for_evaluation
 import numpy as np
 import pandas as pd
-import data_collection_and_preprocessing.unite_scores as unite_scores
+import unite_scores as unite_scores
 responses = unite_scores.unite_scorings()
 
 coefs = {
@@ -25,7 +25,7 @@ def calculate_scores(responses):
     return final_scores
 
 final_scores = calculate_scores(responses)
-cleaned = clean_for_chatgpt.clean()
+cleaned = clean_for_evaluation()
 data = cleaned.iloc[:len(final_scores)]
 data['score']=final_scores
 data = data.iloc[:, [1,2]]

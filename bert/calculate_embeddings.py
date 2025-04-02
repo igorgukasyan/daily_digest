@@ -23,7 +23,10 @@ def calculate_embeddings_without_emojis(model, data):
     return dataframe
 
 def main():
+    ## Load relevant model
     model = SentenceTransformer('sergeyzh/rubert-tiny-turbo')
+
+    ## Load dataset
     data = load_data('../data/data.csv').iloc[:, 1:3]
 
     embeddings = calculate_embeddings(model, data)

@@ -11,7 +11,7 @@ channels = ['Раньше всех. Ну почти.', 'РИА Новости', 
 limit = 10000
 
 async def fetch_messages(channel, limit):
-    """ Fetch messages from single channel """
+    """ Fetch messages from single channel."""
     try:
         message_list = []
         async for message in client.iter_messages(channel, limit):
@@ -23,7 +23,7 @@ async def fetch_messages(channel, limit):
         return channel, []
 
 async def main():
-    """Fetching messages from all channels"""
+    """Fetching messages from all channels."""
     try: 
         post_history = {}
         for channel in channels: 
