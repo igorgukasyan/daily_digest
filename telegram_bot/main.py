@@ -7,7 +7,7 @@ from telegram_bot.helpers.database import get_user_channels, insert_user_channel
 from telegram_bot.helpers.modeling import create_newsletter
 from apscheduler.schedulers.background import BackgroundScheduler
 import time
-
+os.chdir(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 BOT_TOKEN = os.getenv('BOT_TOKEN')
 scheduler = BackgroundScheduler(timezone=utc)
 
