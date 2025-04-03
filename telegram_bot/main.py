@@ -1,15 +1,16 @@
 import os
+import asyncio
 from pytz import utc
 from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes, CallbackQueryHandler
 import sqlite3
 from telegram_bot.helpers.database import get_user_channels, insert_user_channel, get_channel_status, change_status, get_channel_name_by_id, unsubscribe_by_id, get_all_users
 from telegram_bot.helpers.modeling import create_newsletter
-from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
 import time
 os.chdir(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 BOT_TOKEN = os.getenv('BOT_TOKEN')
-scheduler = BackgroundScheduler(timezone=utc)
+scheduler = AsyncIOScheduler()
 
 ## Handle forwarded messages
 async def handle_forwarded_messages(update: Update, context: ContextTypes.DEFAULT_TYPE): 
@@ -115,8 +116,9 @@ async def send_newsletters():
                 print(f"Failed to send newsletter to {user_id}: {e}")
 
 # Schedule the job at 7 AM UTC
-scheduler.add_job(send_newsletters, 'cron', hour=7, minute=0)
+scheduler.add_job(lambda: asyncio.create_task(send_newsletters()), 'cron', hour=7, minute=0)
 scheduler.start()
+
 
 async def send_newsletters_command(update: Update, context: ContextTypes.DEFAULT_TYPE): 
     await send_newsletters()
