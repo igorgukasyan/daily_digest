@@ -117,8 +117,6 @@ async def send_newsletters():
 
 # Schedule the job at 7 AM UTC
 scheduler.add_job(lambda: asyncio.create_task(send_newsletters()), 'cron', hour=7, minute=0)
-scheduler.start()
-
 
 async def send_newsletters_command(update: Update, context: ContextTypes.DEFAULT_TYPE): 
     await send_newsletters()
@@ -133,3 +131,4 @@ if __name__ == '__main__':
     application.add_handler(CallbackQueryHandler(unsubscribe_handler))
     application.add_handler(CommandHandler("send_newsletters_admin", send_newsletters_command))
     application.run_polling()
+    scheduler.start()
