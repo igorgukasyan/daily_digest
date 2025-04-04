@@ -6,11 +6,10 @@ from telegram.ext import Application, CommandHandler, MessageHandler, filters, C
 import sqlite3
 from telegram_bot.helpers.database import get_user_channels, insert_user_channel, get_channel_status, change_status, get_channel_name_by_id, unsubscribe_by_id, get_all_users
 from telegram_bot.helpers.modeling import create_newsletter
-from apscheduler.schedulers.asyncio import AsyncIOScheduler
 import time
+from datetime import time
 os.chdir(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 BOT_TOKEN = os.getenv('BOT_TOKEN')
-scheduler = AsyncIOScheduler()
 
 ## Handle forwarded messages
 async def handle_forwarded_messages(update: Update, context: ContextTypes.DEFAULT_TYPE): 
@@ -115,20 +114,22 @@ async def send_newsletters():
             except Exception as e:
                 print(f"Failed to send newsletter to {user_id}: {e}")
 
-# Schedule the job at 7 AM UTC
-scheduler.add_job(lambda: asyncio.create_task(send_newsletters()), 'cron', hour=7, minute=0)
-
 async def send_newsletters_command(update: Update, context: ContextTypes.DEFAULT_TYPE): 
     await send_newsletters()
     await update.message.reply_text("Newsletters sent to all users!")
 
+# Schedule the job at 7 AM UTC
+def set_schedule(application: Application):
+    job_queue = application.job_queue
+    job_queue.run_daily(send_newsletters, time=time(7, 0), days=(0, 1, 2, 3, 4, 5, 6))  # Run every day at 7 AM UTC
+
 if __name__ == '__main__': 
-    scheduler.start()
     print('Polling...')
     application = Application.builder().token(BOT_TOKEN).build()
+    set_schedule(application)
     application.add_handler(MessageHandler(filters.FORWARDED, handle_forwarded_messages))
     application.add_handler(CommandHandler("my_channels", list_my_channels))
     application.add_handler(CommandHandler("unsubscribe", unsubscribe_menu))
     application.add_handler(CallbackQueryHandler(unsubscribe_handler))
     application.add_handler(CommandHandler("send_newsletters_admin", send_newsletters_command))
-    application.run_polling()
+    application.run_polling(allowed_updates=Update.ALL_TYPES)
