@@ -123,6 +123,7 @@ async def send_newsletters_command(update: Update, context: ContextTypes.DEFAULT
     await update.message.reply_text("Newsletters sent to all users!")
 
 if __name__ == '__main__': 
+    scheduler.start()
     print('Polling...')
     application = Application.builder().token(BOT_TOKEN).build()
     application.add_handler(MessageHandler(filters.FORWARDED, handle_forwarded_messages))
@@ -131,4 +132,3 @@ if __name__ == '__main__':
     application.add_handler(CallbackQueryHandler(unsubscribe_handler))
     application.add_handler(CommandHandler("send_newsletters_admin", send_newsletters_command))
     application.run_polling()
-    scheduler.start()
